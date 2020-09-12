@@ -2,14 +2,27 @@
 
     window.domElementHighlighter = (function(window, document) {
 
-        let inspector;
+        let inspector, srcElement;
         let opt = {
             elemId: "domElementHighlighter",
-            overlay : "domElementHighlighter-overlay",
-            backgroundColor: "rgba(255,0,0,0.5)",
+            overlay : "domElementHighlighterOverlay",
+            visible : "domElementHighlighterVisible",
+            highlightStyle : "#domElementHighlighterOverlay { display:none; background: rgba(0,0,0,0.5); z-index: 99999999; position:fixed; top:0; left:0; right:0; bottom:0; height:100%; width:100%;}" +
+                " #domElementHighlighterVisible { z-index: 100000000; background:white; position:relative;}",
+            border: "2px solid red",
             transitionSpeed: 50,
             ignoreElem: [ "head",  "meta",  "link",  "style",  "title",  "script"]  //elements to ignore
         };
+
+        let addStyle = function (styles) {
+            var css = document.createElement('style'); /* Create style document */
+            css.type = 'text/css';
+            if (css.styleSheet)
+                css.styleSheet.cssText = styles;
+            else
+                css.appendChild(document.createTextNode(styles));
+            document.getElementsByTagName("head")[0].appendChild(css); /* Append style to the tag name */
+        }
 
         let events = { //define all the events
             click : "click",
@@ -46,17 +59,8 @@
                 "pointer-events : " + "none;" +
                 "z-index : 9999999999;" +
                 "position :absolute;" +
-                "background-color : " + opt.backgroundColor;
+                "border : " + opt.border;
         };
-
-        let getOverlayDesign = function() {
-            return "display:none; background: rgba(0,0,0,0.9); z-index: 99; position:absolute; top:0; left:0; right:0; bottom:0;";
-        };
-
-        let getHighlightDesign = function() {
-            return "display:none; background: rgba(0,0,0,0.9); z-index: 99; position:absolute; top:0; left:0; right:0; bottom:0;";
-        };
-
 
         let setUpInspector = function() {
             inspector = document.createElement("div");  //inspector elem
@@ -64,11 +68,11 @@
             inspector.style = getInspectorDesign(); //get inspector design
             document.getElementsByTagName("body")[0].appendChild(inspector); // append to body
 
-            inspector = document.createElement("style");  //inspector elem
-            inspector.id = opt.overlay;
-            inspector.style = getOverlayDesign(); //get inspector design
-            document.getElementsByTagName("body")[0].appendChild(inspector); // append to body
+            let inspectorOverlay = document.createElement("div");  //inspector elem
+            inspectorOverlay.id = opt.overlay;
+            document.getElementsByTagName("body")[0].appendChild(inspectorOverlay); // append to body
 
+            addStyle(opt.highlightStyle);
         };
 
         let eventEmitter = function(event) {
@@ -97,9 +101,20 @@
         }
 
         let highlightElement = function (e){
-            console.log(e.target.classList);
-            e.stopPropagation();
-            e.preventDefault();
+           if(e.target.id===opt.overlay){
+               console.log('clicked on overlay');
+               document.removeEventListener(events.mouseover,freezeDomEvent, true);
+               document.getElementById(opt.overlay).style.display = "none";
+               srcElement.removeAttribute('id');
+               srcElement = null;
+           }else{
+               srcElement = e.srcElement;
+               srcElement.setAttribute('id',opt.visible);
+               document.getElementById(opt.overlay).style.display = "block";
+               document.addEventListener(events.mouseover,freezeDomEvent, true);
+               e.stopPropagation();
+               e.preventDefault();
+           }
         }
 
         let attachListeners = function (type) {

@@ -37,7 +37,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1599828987680</updated>
-      <workItem from="1599828988856" duration="19910000" />
+      <workItem from="1599828988856" duration="22948000" />
     </task>
     <servers />
   </component>
@@ -45,6 +45,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="548" y="161" width="874" height="788" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1599898338200">
+      <screen x="61" y="33" width="1859" height="1047" />
+    </state>
+    <state x="548" y="161" width="874" height="788" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/61.33.1859.1047@61.33.1859.1047" timestamp="1599898338200" />
     <state x="654" y="255" key="run.anything.popup" timestamp="1599890102975">
       <screen x="61" y="33" width="1859" height="1047" />
     </state>
