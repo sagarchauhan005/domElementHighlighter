@@ -8,7 +8,7 @@
             overlay : "domElementHighlighterOverlay",
             visible : "domElementHighlighterVisible",
             highlightStyle : "#domElementHighlighterOverlay { display:none; background: rgba(0,0,0,0.5); z-index: 99999999; position:fixed; top:0; left:0; right:0; bottom:0; height:100%; width:100%;}" +
-                " #domElementHighlighterVisible { z-index: 100000000; background:white; position:relative;}",
+                " #domElementHighlighterVisible { z-index: 100000000; background:white; position:relative; opacity : 0.8;}",
             border: "2px solid red",
             transitionSpeed: 50,
             ignoreElem: [ "head",  "meta",  "link",  "style",  "title",  "script"]  //elements to ignore
@@ -67,11 +67,11 @@
             inspector = document.createElement("div");  //inspector elem
             inspector.id = opt.elemId;
             inspector.style = getInspectorDesign(); //get inspector design
-            document.getElementsByTagName("body")[0].appendChild(inspector); // append to body
+            document.getElementsByTagName("body")[0].prepend(inspector); // append to body
 
             let inspectorOverlay = document.createElement("div");  //inspector elem
             inspectorOverlay.id = opt.overlay;
-            document.getElementsByTagName("body")[0].appendChild(inspectorOverlay); // append to body
+            document.getElementsByTagName("body")[0].prepend(inspectorOverlay); // append to body
 
             addStyle(opt.highlightStyle);
         };
@@ -96,25 +96,15 @@
             e.preventDefault();
         }
 
-        let removeDomEvents = function (elem){
-            var el = elem, elClone = el.cloneNode(true);
-            el.parentNode.replaceChild(elClone, el);
-        }
-
         const getCssSelectorShort = (el) => {
             let path = [], parent;
             while (parent = el.parentNode) {
-                let tag = el.tagName, siblings;
-                path.unshift(
-                    el.id ? `#${el.id}` : (
-                        siblings = parent.children,
-                            [].filter.call(siblings, sibling => sibling.tagName === tag).length === 1 ? tag :
-                                `${tag}:nth-child(${1+[].indexOf.call(siblings, el)})`
-                    )
-                );
+                path.unshift(`${el.tagName}:nth-child(${[].indexOf.call(parent.children, el)+1})`);
                 el = parent;
-            };
+            }
+            console.log('%c Unique css selector for the clicked element is : ', 'color: red');
             console.log(`${path.join(' > ')}`.toLowerCase());
+            console.log("---------------------------------------------------------------------");
         };
 
         let handleOverlayClick = function () {
