@@ -57,6 +57,7 @@
                 "width : " + (width || 0) + "px;" +
                 "height: " + (height || 0) + "px;" +
                 "pointer-events : " + "none;" +
+                "cursor : " + "pointer;" +
                 "z-index : 9999999999;" +
                 "position :absolute;" +
                 "border : " + opt.border;
@@ -100,20 +101,43 @@
             el.parentNode.replaceChild(elClone, el);
         }
 
+        const getCssSelectorShort = (el) => {
+            let path = [], parent;
+            while (parent = el.parentNode) {
+                let tag = el.tagName, siblings;
+                path.unshift(
+                    el.id ? `#${el.id}` : (
+                        siblings = parent.children,
+                            [].filter.call(siblings, sibling => sibling.tagName === tag).length === 1 ? tag :
+                                `${tag}:nth-child(${1+[].indexOf.call(siblings, el)})`
+                    )
+                );
+                el = parent;
+            };
+            console.log(`${path.join(' > ')}`.toLowerCase());
+        };
+
+        let handleOverlayClick = function () {
+            document.removeEventListener(events.mouseover,freezeDomEvent, true);
+            document.getElementById(opt.overlay).style.display = "none";
+            srcElement.removeAttribute('id');
+        };
+
+        let highlightActiveElem = function (e){
+            srcElement = e.srcElement;
+            srcElement.setAttribute('id',opt.visible);
+            document.getElementById(opt.overlay).style.display = "block";
+            document.addEventListener(events.mouseover,freezeDomEvent, true);
+            getCssSelectorShort(srcElement); //Log the unique css selector
+            e.stopPropagation();
+            e.preventDefault();
+        };
+
         let highlightElement = function (e){
            if(e.target.id===opt.overlay){
-               console.log('clicked on overlay');
-               document.removeEventListener(events.mouseover,freezeDomEvent, true);
-               document.getElementById(opt.overlay).style.display = "none";
-               srcElement.removeAttribute('id');
-               srcElement = null;
+               handleOverlayClick();
            }else{
-               srcElement = e.srcElement;
-               srcElement.setAttribute('id',opt.visible);
-               document.getElementById(opt.overlay).style.display = "block";
-               document.addEventListener(events.mouseover,freezeDomEvent, true);
-               e.stopPropagation();
-               e.preventDefault();
+               highlightActiveElem(e);
            }
         }
 
