@@ -8,7 +8,7 @@
             overlay : "domElementHighlighterOverlay",
             visible : "domElementHighlighterVisible",
             highlightStyle : "#domElementHighlighterOverlay { display:none; background: rgba(0,0,0,0.5); z-index: 99999999; position:fixed; top:0; left:0; right:0; bottom:0; height:100%; width:100%;}" +
-                " #domElementHighlighterVisible { z-index: 100000000; background:white; position:relative; opacity : 0.8;}",
+                " #domElementHighlighterVisible { z-index: 100000000 !important; background-color:white !important; position:relative;}",
             border: "2px solid red",
             transitionSpeed: 50,
             ignoreElem: [ "head",  "meta",  "link",  "style",  "title",  "script"]  //elements to ignore
@@ -60,6 +60,7 @@
                 "cursor : " + "pointer;" +
                 "z-index : 2147483647;" +
                 "position :absolute;" +
+                "box-shadow :0 0 0 9999px rgba(0, 0, 0, 0.5);" +
                 "border : " + opt.border;
         };
 
@@ -115,8 +116,8 @@
 
         let highlightActiveElem = function (e){
             srcElement = e.srcElement;
-            srcElement.setAttribute('id',opt.visible);
-            document.getElementById(opt.overlay).style.display = "block";
+            //srcElement.setAttribute('id',opt.visible);
+            //document.getElementById(opt.overlay).style.display = "block";
             document.addEventListener(events.mouseover,freezeDomEvent, true);
             getCssSelectorShort(srcElement); //Log the unique css selector
             e.stopPropagation();
