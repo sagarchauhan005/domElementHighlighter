@@ -5,10 +5,8 @@
         let inspector, srcElement;
         let opt = {
             elemId: "domElementHighlighter",
-            overlay : "domElementHighlighterOverlay",
             visible : "domElementHighlighterVisible",
-            highlightStyle : "#domElementHighlighterOverlay { display:none; background: rgba(0,0,0,0.5); z-index: 99999999; position:fixed; top:0; left:0; right:0; bottom:0; height:100%; width:100%;}" +
-                " #domElementHighlighterVisible { z-index: 100000000 !important; background-color:white !important; position:relative;}",
+            highlightStyle : ".domElementHighlighterVisible {box-shadow : 0 0 0 9999px rgba(0, 0, 0, 0.5);}",
             border: "2px solid red",
             transitionSpeed: 50,
             ignoreElem: [ "head",  "meta",  "link",  "style",  "title",  "script"]  //elements to ignore
@@ -31,6 +29,7 @@
             mouseup : "mouseup",
             mouseleave : "mouseleave",
             mousedown : "mousedown",
+            keyUp: "keyup"
         }
 
         let actions = {  //actions to take
@@ -60,7 +59,7 @@
                 "cursor : " + "pointer;" +
                 "z-index : 2147483647;" +
                 "position :absolute;" +
-                "box-shadow :0 0 0 9999px rgba(0, 0, 0, 0.5);" +
+                /*"box-shadow : 0 0 0 9999px rgba(0, 0, 0, 0.5);" +*/
                 "border : " + opt.border;
         };
 
@@ -108,34 +107,26 @@
             console.log("---------------------------------------------------------------------");
         };
 
-        let handleOverlayClick = function () {
-            document.removeEventListener(events.mouseover,freezeDomEvent, true);
-            document.getElementById(opt.overlay).style.display = "none";
-            srcElement.removeAttribute('id');
-        };
-
         let highlightActiveElem = function (e){
             srcElement = e.srcElement;
-            //srcElement.setAttribute('id',opt.visible);
-            //document.getElementById(opt.overlay).style.display = "block";
+            document.getElementById(opt.elemId).classList.add(opt.visible);
             document.addEventListener(events.mouseover,freezeDomEvent, true);
             getCssSelectorShort(srcElement); //Log the unique css selector
             e.stopPropagation();
             e.preventDefault();
         };
 
-        let highlightElement = function (e){
-            if(e.target.id===opt.overlay){
-                handleOverlayClick();
-            }else{
-                highlightActiveElem(e);
-            }
-        }
-
         let cloneElem = function (elem){
             var new_element = elem.cloneNode(true);
             elem.parentNode.replaceChild(new_element, elem);
             return new_element;
+        }
+
+        let keyPress = function (e) {
+            if (e.key === "Escape"){
+                document.removeEventListener(events.mouseover,freezeDomEvent, true);
+                document.getElementById(opt.elemId).classList.remove(opt.visible);
+            }
         }
 
         let attachListeners = function (type) {
@@ -145,12 +136,17 @@
                 let elem = allNodes[i];
                 if (type === actions.stop) {
                     elem.removeEventListener(events.mouseover, eventEmitter);
-                    elem.removeEventListener(events.click, highlightElement);
+                    elem.removeEventListener(events.click, highlightActiveElem);
                 } else if (type === actions.start) {
                     elem.addEventListener(events.mouseover, eventEmitter);
-                    elem.addEventListener(events.click, highlightElement);
+                    elem.addEventListener(events.click, highlightActiveElem);
                 }
             }
+
+            if(actions.stop){  //removes the keyup listener
+                document.removeEventListener(events.keyUp,keyPress)
+            }
+
         }
 
         let removeDefaultHandlers = function () {
@@ -162,11 +158,16 @@
         };
 
 
+        let handleCloseByEscape = function () {
+            document.addEventListener(events.keyUp, keyPress);
+        }
+
         let init = function(type) { // initiate the library
             let action = (type) ? actions.start : actions.stop;
             removeDefaultHandlers();
             setUpInspector();
             attachListeners(action);
+            handleCloseByEscape();
         };
 
         return {  //expose the function
