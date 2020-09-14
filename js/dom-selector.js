@@ -162,7 +162,7 @@
 
 
         let init = function() { // initiate the library
-            //removeDefaultHandlers();
+            removeDefaultHandlers();
             setUpInspector();
             attachListeners(actions.start);
         };
