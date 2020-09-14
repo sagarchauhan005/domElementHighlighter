@@ -161,10 +161,11 @@
         };
 
 
-        let init = function() { // initiate the library
+        let init = function(type) { // initiate the library
+            let action = (type) ? actions.start : actions.stop;
             removeDefaultHandlers();
             setUpInspector();
-            attachListeners(actions.start);
+            attachListeners(action);
         };
 
         return {  //expose the function
