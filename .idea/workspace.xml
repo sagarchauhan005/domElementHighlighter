@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="dccfa105-2ea0-4a7a-b40b-1f8d37560adb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/dom-selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dom-selector.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +45,9 @@
       <option name="presentableId" value="Default" />
       <updated>1599828987680</updated>
       <workItem from="1599828988856" duration="23916000" />
-      <workItem from="1599904422994" duration="4607000" />
+      <workItem from="1599904422994" duration="8657000" />
+      <workItem from="1600062158571" duration="743000" />
+      <workItem from="1600086393099" duration="5173000" />
     </task>
     <servers />
   </component>
@@ -56,9 +59,13 @@
       <screen x="61" y="33" width="1859" height="1047" />
     </state>
     <state x="548" y="161" width="874" height="788" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/61.33.1859.1047@61.33.1859.1047" timestamp="1599898338200" />
-    <state x="654" y="255" key="run.anything.popup" timestamp="1599890102975">
+    <state x="654" y="255" key="run.anything.popup" timestamp="1599928806509">
       <screen x="61" y="33" width="1859" height="1047" />
     </state>
-    <state x="654" y="255" key="run.anything.popup/61.33.1859.1047@61.33.1859.1047" timestamp="1599890102975" />
+    <state x="654" y="255" key="run.anything.popup/61.33.1859.1047@61.33.1859.1047" timestamp="1599928806509" />
+    <state x="653" y="263" key="search.everywhere.popup" timestamp="1600090508061">
+      <screen x="61" y="33" width="1859" height="1047" />
+    </state>
+    <state x="653" y="263" key="search.everywhere.popup/61.33.1859.1047@61.33.1859.1047" timestamp="1600090508061" />
   </component>
 </project>

@@ -58,7 +58,7 @@
                 "height: " + (height || 0) + "px;" +
                 "pointer-events : " + "none;" +
                 "cursor : " + "pointer;" +
-                "z-index : 9999999999;" +
+                "z-index : 2147483647;" +
                 "position :absolute;" +
                 "border : " + opt.border;
         };
@@ -124,32 +124,48 @@
         };
 
         let highlightElement = function (e){
-           if(e.target.id===opt.overlay){
-               handleOverlayClick();
-           }else{
-               highlightActiveElem(e);
-           }
+            if(e.target.id===opt.overlay){
+                handleOverlayClick();
+            }else{
+                highlightActiveElem(e);
+            }
+        }
+
+        let cloneElem = function (elem){
+            var new_element = elem.cloneNode(true);
+            elem.parentNode.replaceChild(new_element, elem);
+            return new_element;
         }
 
         let attachListeners = function (type) {
             let query = getQuery();
             let allNodes = document.querySelectorAll(query);
             for (let i = 0; i < allNodes.length; i++) {  //loop each node to bind the listener
+                let elem = allNodes[i];
                 if (type === actions.stop) {
-                    allNodes[i].removeEventListener(events.mouseover, eventEmitter);
+                    elem.removeEventListener(events.mouseover, eventEmitter);
                 } else if (type === actions.start) {
-                    allNodes[i].addEventListener(events.mouseover, eventEmitter);
-                    allNodes[i].addEventListener(events.click, highlightElement);
-                    allNodes[i].addEventListener(events.mousedown, freezeDomEvent);
-                    allNodes[i].addEventListener(events.mouseenter, freezeDomEvent);
-                    allNodes[i].addEventListener(events.mouseleave, freezeDomEvent);
-                    allNodes[i].addEventListener(events.mouseup, freezeDomEvent);
+                    elem.addEventListener(events.mouseover, eventEmitter);
+                    elem.addEventListener(events.click, highlightElement);
+                    elem.addEventListener(events.mousedown, freezeDomEvent);
+                    elem.addEventListener(events.mouseenter, freezeDomEvent);
+                    elem.addEventListener(events.mouseleave, freezeDomEvent);
+                    elem.addEventListener(events.mouseup, freezeDomEvent);
                 }
             }
         }
 
+        let removeDefaultHandlers = function () {
+            let query = getQuery();
+            let allNodes = document.querySelectorAll(query);
+            for (let i = 0; i < allNodes.length; i++) {  //loop each node to bind the listener
+                cloneElem(allNodes[i]);
+            }
+        };
+
 
         let init = function() { // initiate the library
+            removeDefaultHandlers();
             setUpInspector();
             attachListeners(actions.start);
         };
@@ -161,3 +177,7 @@
     })(window, document);
 
 })(window, document);
+
+
+
+
