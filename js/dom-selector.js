@@ -144,13 +144,10 @@
                 let elem = allNodes[i];
                 if (type === actions.stop) {
                     elem.removeEventListener(events.mouseover, eventEmitter);
+                    elem.removeEventListener(events.click, highlightElement);
                 } else if (type === actions.start) {
                     elem.addEventListener(events.mouseover, eventEmitter);
                     elem.addEventListener(events.click, highlightElement);
-                    elem.addEventListener(events.mousedown, freezeDomEvent);
-                    elem.addEventListener(events.mouseenter, freezeDomEvent);
-                    elem.addEventListener(events.mouseleave, freezeDomEvent);
-                    elem.addEventListener(events.mouseup, freezeDomEvent);
                 }
             }
         }
@@ -165,7 +162,7 @@
 
 
         let init = function() { // initiate the library
-            removeDefaultHandlers();
+            //removeDefaultHandlers();
             setUpInspector();
             attachListeners(actions.start);
         };
