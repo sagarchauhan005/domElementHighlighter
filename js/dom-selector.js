@@ -6,10 +6,15 @@
         let opt = {
             elemId: "domElementHighlighter",
             visible : "domElementHighlighterVisible",
-            highlightStyle : ".domElementHighlighterVisible {box-shadow : 0 0 0 9999px rgba(0, 0, 0, 0.5);}",
+            closeBtnContainer: "domCloseHighlighterCont",
+            closeBtn: "domCloseHighlighterBtn",
+            highlightStyle : ".domElementHighlighterVisible {box-shadow : 0 0 0 9999px rgba(0, 0, 0, 0.5);} " +
+                "#domCloseHighlighterCont{display:none; top: 20px; position: fixed; color: white; right: 52px; " +
+                "cursor: pointer; font-size: 25px; line-height:0; background-color: rgba(0, 0, 0, 0.8); padding: 10px 20px 10px 20px; border-radius:10px;}",
             border: "2px solid red",
             transitionSpeed: 50,
-            ignoreElem: [ "head",  "meta",  "link",  "style",  "title",  "script"]  //elements to ignore
+            ignoreElem: [ "head",  "meta",  "link",  "style",  "title",  "script"],  //elements to ignore
+
         };
 
         let addStyle = function (styles) {
@@ -59,8 +64,13 @@
                 "cursor : " + "pointer;" +
                 "z-index : 2147483647;" +
                 "position :absolute;" +
-                /*"box-shadow : 0 0 0 9999px rgba(0, 0, 0, 0.5);" +*/
                 "border : " + opt.border;
+        };
+
+        let closeHighlight = function(){
+            document.removeEventListener(events.mouseover,freezeDomEvent, true);
+            document.getElementById(opt.elemId).classList.remove(opt.visible);
+            document.getElementById(opt.closeBtnContainer).style.display="none";
         };
 
         let setUpInspector = function() {
@@ -70,8 +80,9 @@
             document.getElementsByTagName("body")[0].prepend(inspector); // append to body
 
             let inspectorOverlay = document.createElement("div");  //inspector elem
-            inspectorOverlay.id = opt.overlay;
-            document.getElementsByTagName("body")[0].prepend(inspectorOverlay); // append to body
+            inspectorOverlay.innerHTML = '<p>Press Esc to close</p>';
+            inspectorOverlay.id = opt.closeBtnContainer;
+            document.getElementById(opt.elemId).append(inspectorOverlay); // append to body
 
             addStyle(opt.highlightStyle);
         };
@@ -109,6 +120,7 @@
 
         let highlightActiveElem = function (e){
             srcElement = e.srcElement;
+            document.getElementById(opt.closeBtnContainer).style.display="block";
             document.getElementById(opt.elemId).classList.add(opt.visible);
             document.addEventListener(events.mouseover,freezeDomEvent, true);
             getCssSelectorShort(srcElement); //Log the unique css selector
@@ -124,8 +136,7 @@
 
         let keyPress = function (e) {
             if (e.key === "Escape"){
-                document.removeEventListener(events.mouseover,freezeDomEvent, true);
-                document.getElementById(opt.elemId).classList.remove(opt.visible);
+                closeHighlight();
             }
         }
 
@@ -177,6 +188,8 @@
     })(window, document);
 
 })(window, document);
+
+
 
 
 
