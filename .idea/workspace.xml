@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dccfa105-2ea0-4a7a-b40b-1f8d37560adb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.jshintrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/dom-selector.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/dom-selector.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,8 +33,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/extensionizr_custom1600104263376/ext" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript.Linters.JSHint" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -48,7 +54,7 @@
       <workItem from="1599904422994" duration="8657000" />
       <workItem from="1600062158571" duration="743000" />
       <workItem from="1600086393099" duration="17654000" />
-      <workItem from="1600110931921" duration="858000" />
+      <workItem from="1600110931921" duration="3526000" />
     </task>
     <servers />
   </component>
@@ -56,10 +62,18 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="569" y="183" width="832" height="745" key="#JSHint" timestamp="1600147816039">
+      <screen x="61" y="33" width="1859" height="1047" />
+    </state>
+    <state x="569" y="183" width="832" height="745" key="#JSHint/61.33.1859.1047@61.33.1859.1047" timestamp="1600147816039" />
     <state x="722" y="314" key="FileChooserDialogImpl" timestamp="1600105467687">
       <screen x="61" y="33" width="1859" height="1047" />
     </state>
     <state x="722" y="314" key="FileChooserDialogImpl/61.33.1859.1047@61.33.1859.1047" timestamp="1600105467686" />
+    <state x="449" y="191" key="SettingsEditor" timestamp="1600148874600">
+      <screen x="61" y="33" width="1859" height="1047" />
+    </state>
+    <state x="449" y="191" key="SettingsEditor/61.33.1859.1047@61.33.1859.1047" timestamp="1600148874600" />
     <state x="548" y="161" width="874" height="788" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1599898338200">
       <screen x="61" y="33" width="1859" height="1047" />
     </state>
@@ -68,9 +82,9 @@
       <screen x="61" y="33" width="1859" height="1047" />
     </state>
     <state x="654" y="255" key="run.anything.popup/61.33.1859.1047@61.33.1859.1047" timestamp="1599928806509" />
-    <state x="653" y="263" key="search.everywhere.popup" timestamp="1600090508061">
+    <state x="653" y="263" width="672" height="679" key="search.everywhere.popup" timestamp="1600111878302">
       <screen x="61" y="33" width="1859" height="1047" />
     </state>
-    <state x="653" y="263" key="search.everywhere.popup/61.33.1859.1047@61.33.1859.1047" timestamp="1600090508061" />
+    <state x="653" y="263" width="672" height="679" key="search.everywhere.popup/61.33.1859.1047@61.33.1859.1047" timestamp="1600111878302" />
   </component>
 </project>
