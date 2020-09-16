@@ -10,7 +10,7 @@
             visible: 'domElementHighlighterVisible',
             closeBtnContainer: 'domCloseHighlighterCont',
             closeBtn: 'domCloseHighlighterBtn',
-            highlightStyle: '.domElementHighlighterVisible {box-shadow : 0 0 0 9999px rgba(0, 0, 0, 0.5);} #domCloseHighlighterCont{display:none; top: 20px; position: fixed; color: white; right: 52px; cursor: pointer; font-size: 25px; line-height:0; background-color: rgba(0, 0, 0, 0.8); padding: 10px 20px 10px 20px; border-radius:10px;}',
+            highlightStyle: '.domElementHighlighterVisible {box-shadow : 0 0 0 9999px rgba(0, 0, 0, 0.5);} #domCloseHighlighterCont{display:none; top: 20px ; position: fixed; color: white; right: 52px; cursor: pointer; font-size: 25px !important; line-height:0; background-color: rgba(0, 0, 0, 0.8) !important; border-radius:10px !important;}',
             border: '2px solid red',
             transitionSpeed: 50,
             ignoreElem: ['head', 'meta', 'link', 'style', 'title', 'script'], // elements to ignore
@@ -99,7 +99,7 @@
             document.getElementsByTagName('body')[0].prepend(inspector); // append to body
 
             const inspectorOverlay = document.createElement('div'); // inspector elem
-            inspectorOverlay.innerHTML = '<p>Press Esc to close</p>';
+            inspectorOverlay.innerHTML = '<p style="color:white !important; font-size: 25px !important; padding: 20px 20px 6px 20px !important;">Press Esc to close</p>';
             inspectorOverlay.id = opt.closeBtnContainer;
             document.getElementById(opt.elemId).append(inspectorOverlay); // append to body
 
@@ -133,18 +133,45 @@
             e.preventDefault();
         };
 
+
+
         /*
         * Logs the output of the css selector to console
         * */
-        const getCssSelectorShort = function (el) {
-            const path = []; let
-                parent;
-            while (parent = el.parentNode) {
-                path.unshift(`${el.tagName}:nth-child(${[].indexOf.call(parent.children, el) + 1})`);
-                el = parent;
+        const getCssSelectorShort = function (element) {
+            var selector = element.id;
+
+            // if we have an ID, that's all we need. IDs are unique. The end.
+            if(selector.id) {
+                return "#" + selector;
             }
+
+            selector = [];
+            var cl, name;
+            while(element.parentNode && (selector.length === 0 || document.querySelectorAll(selector.join(' ')).length !== 1)) {
+
+                // if exist, add the first found id and finish building the selector
+                var id = element.getAttribute("id");
+                if (id) {
+                    selector.unshift("#" + id);
+                    break;
+                }
+
+                cl = element.getAttribute("class");
+                cl = cl ? "." + cl.trim().replace(/ +/g,'.') : '';
+                name = element.getAttribute("name");
+                name = name ? ("[name=" + name.trim() + "]") : '';
+                selector.unshift(element.localName + cl + name);
+                element = element.parentNode;
+            }
+
+            var result = selector[0];
+            if (selector.length > 1) {
+                result += " > " + selector.slice(1).join(" > ").replace(/\[name=[^\]]*]/g, '');
+            }
+
             console.log('%c Unique css selector for the clicked element is : ', 'color: red');
-            console.log(`${path.join(' > ')}`.toLowerCase());
+            console.log(result);
             console.log('---------------------------------------------------------------------');
         };
 
