@@ -1,6 +1,6 @@
 (function (window, document) {
     window.domElementHighlighter = (function (window, document) {
-        let inspector; let  srcElement;
+        let inspector; let  srcElement; let gTop, gLeft, gHeight, gWidth;
 
         /*
         * Options value for the highlighter
@@ -73,7 +73,7 @@
                 + `left :${left || 0}px;`
                 + `width : ${width || 0}px;`
                 + `height: ${height || 0}px;`
-                + 'pointer-events : ' + 'none;'
+                + 'pointer-events : ' + 'none !important;'
                 + 'cursor : ' + 'pointer;'
                 + 'z-index : 2147483647;'
                 + 'position :absolute;'
@@ -85,6 +85,7 @@
         * */
         const closeHighlight = function () {
             document.removeEventListener(events.mouseover, freezeDomEvent, true);
+            document.removeEventListener(events.click, handleCloseClick, true);
             document.getElementById(opt.elemId).classList.remove(opt.visible);
             document.getElementById(opt.closeBtnContainer).style.display = 'none';
         };
@@ -120,6 +121,7 @@
             const top = Math.max(0, pos.top + scrollTop);
             const { left } = pos;
 
+            gWidth = width; gTop = top; gHeight = height; gLeft = left;
             const inspectorStyles = getInspectorDesign(top, left, width, height); // get inspector style
             inspector.setAttribute('style', inspectorStyles); // assign the style
         };
@@ -176,16 +178,38 @@
         };
 
         /*
+        * Handles the overlay close
+        * */
+        const handleCloseClick = function (event) {
+            const { target } = event; // active node
+            const pos = target.getBoundingClientRect(); // get information
+            const scrollTop = window.scrollY || document.documentElement.scrollTop; // get Scroll
+            const { nWidth } = pos;
+            const { nHeight } = pos;
+            const nTop = Math.max(0, pos.top + scrollTop);
+            const { nLeft } = pos;
+
+            if(gTop!==nTop && gLeft !== nLeft && gHeight !==nHeight && gWidth !==nWidth){
+                closeHighlight();
+            }else{
+                console.log("%c Click outside the highlighted element to close the overlay. Click on overlay or press escape", 'color: green');
+            }
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        /*
         * Highlights the active element
         * */
         const highlightActiveElem = function (e) {
-            srcElement = e.srcElement;
-            document.getElementById(opt.closeBtnContainer).style.display = 'block';
-            document.getElementById(opt.elemId).classList.add(opt.visible);
-            document.addEventListener(events.mouseover, freezeDomEvent, true);
-            getCssSelectorShort(srcElement); // Log the unique css selector
-            e.stopPropagation();
-            e.preventDefault();
+                srcElement = e.srcElement;
+                document.getElementById(opt.closeBtnContainer).style.display = 'block';
+                document.getElementById(opt.elemId).classList.add(opt.visible);
+                document.addEventListener(events.mouseover, freezeDomEvent, true);
+                document.addEventListener(events.click, handleCloseClick, true);
+                getCssSelectorShort(srcElement); // Log the unique css selector
+                e.stopPropagation();
+                e.preventDefault();
         };
 
         /*
