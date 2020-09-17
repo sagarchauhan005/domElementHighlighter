@@ -100,6 +100,7 @@
             document.getElementsByTagName('body')[0].prepend(inspector); // append to body
 
             const inspectorOverlay = document.createElement('div'); // inspector elem
+            // used important in styling to override the p style tag in different website as this message wasn't visible
             inspectorOverlay.innerHTML = '<p style="color:white !important; font-size: 25px !important; padding: 20px 20px 6px 20px !important;">Press Esc to close</p>';
             inspectorOverlay.id = opt.closeBtnContainer;
             document.getElementById(opt.elemId).append(inspectorOverlay); // append to body
@@ -108,9 +109,9 @@
         };
 
         /*
-        * Event handlers
+        * gets the dimensions of the clicked element
         * */
-        const eventEmitter = function (event) {
+        const getDimensions = function (event) {
             const { target } = event; // active node
             if (target.id === opt.elemId) return; // ignore itself
 
@@ -121,8 +122,19 @@
             const top = Math.max(0, pos.top + scrollTop);
             const { left } = pos;
 
-            gWidth = width; gTop = top; gHeight = height; gLeft = left;
-            const inspectorStyles = getInspectorDesign(top, left, width, height); // get inspector style
+            return {
+                'width' : width, 'height' : height, 'top' : top, 'left' : left
+            }
+        }
+
+        /*
+        * Event handlers
+        * */
+        const eventEmitter = function (event) {
+
+            let dimensions = getDimensions(event);
+            gWidth = dimensions.width; gTop = dimensions.top; gHeight = dimensions.height; gLeft = dimensions.left; // for checking click in highlighted element while closing
+            const inspectorStyles = getInspectorDesign(dimensions.top, dimensions.left, dimensions.width, dimensions.height); // get inspector style
             inspector.setAttribute('style', inspectorStyles); // assign the style
         };
 
@@ -143,7 +155,7 @@
         const getCssSelectorShort = function (element) {
             var selector = element.id;
 
-            // if we have an ID, that's all we need. IDs are unique. The end.
+            // Stop if an id is found, those are unique.
             if(selector.id) {
                 return "#" + selector;
             }
@@ -181,18 +193,9 @@
         * Handles the overlay close
         * */
         const handleCloseClick = function (event) {
-            const { target } = event; // active node
-            const pos = target.getBoundingClientRect(); // get information
-            const scrollTop = window.scrollY || document.documentElement.scrollTop; // get Scroll
-            const { nWidth } = pos;
-            const { nHeight } = pos;
-            const nTop = Math.max(0, pos.top + scrollTop);
-            const { nLeft } = pos;
-
-            if(gTop!==nTop && gLeft !== nLeft && gHeight !==nHeight && gWidth !==nWidth){
+            let nDimensions = getDimensions(event);
+            if(gTop!==nDimensions.top && gLeft !== nDimensions.left && gHeight !== nDimensions.height && gWidth !== nDimensions.width){
                 closeHighlight();
-            }else{
-                console.log("%c Click outside the highlighted element to close the overlay. Click on overlay or press escape", 'color: green');
             }
             event.stopPropagation();
             event.preventDefault();
