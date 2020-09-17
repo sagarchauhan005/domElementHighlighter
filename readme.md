@@ -14,6 +14,7 @@ A simple js script to highlight the DOM elements just like chrome dev tools insp
     - Stop
         - `domElementHighlighter.init(false);`
  - Once the script starts, hover your mouse onto any element and click to highlight the element.
+ - `Click anywhere on overlay` outside of highlighted element to close the overlay.
  - `Press escape` to close the highlighted element.       
              
 
